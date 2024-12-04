@@ -72,11 +72,11 @@ for baju in baju_bayi:
                 img = Image.open(BytesIO(response.content))
             else:
                 # Jika gambar lokal
-                img = Image.open(baju["Gambar"])
+                img = Image.open(baju["baju1"])
 
             st.image(img, use_column_width=True)
         except Exception as e:
-            st.error(f"Gagal memuat gambar untuk {baju['Nama']}")
+            st.error(f"Gagal memuat gambar untuk {baju['baju1']}")
 
     with col2:
         st.subheader(baju["Nama"])
