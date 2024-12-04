@@ -6,6 +6,44 @@ from io import BytesIO
 # Judul aplikasi
 st.title("Katalog Toko Baju Bayi")
 
+# Deskripsi halaman
+st.write("Selamat datang di toko baju online kami! Di sini Anda dapat menemukan berbagai macam baju dengan harga terjangkau.")
+
+# Buat sidebar
+with st.sidebar:
+    # Kategori baju
+    kategori = st.selectbox("Kategori", ["Semua", "Kaos", "Kemeja", "Celana", "Rok"])
+
+    # Rentang harga
+    harga_min, harga_max = st.slider("Rentang Harga", 0, 100, (0, 100))
+
+    # Ukuran baju
+    ukuran = st.multiselect("Ukuran", ["S", "M", "L", "XL", "XXL"])
+
+    # Warna baju
+    warna = st.multiselect("Warna", ["Merah", "Biru", "Hijau", "Kuning", "Hitam", "Putih"])
+
+# Keranjang belanja
+keranjang = []
+
+# Tambahkan baju ke keranjang
+def add_to_cart(baju):
+    keranjang.append(baju)
+
+# Hapus baju dari keranjang
+def remove_from_cart(baju):
+    keranjang.remove(baju)
+
+# Filter data baju
+if kategori != "Semua":
+    data = data[data["Kategori"] == kategori]
+if harga_min > 0 or harga_max < 100:
+    data = data[(data["Harga"] >= harga_min) & (data["Harga"] <= harga_max)]
+if len(ukuran) > 0:
+    data = data[data["Ukuran"].isin(ukuran)]
+if len(warna) > 0:
+    data = data[data["Warna"].isin(warna)]
+
 # Data baju bayi (kombinasi URL dan gambar lokal)
 baju_bayi = [
     {"Nama": "Baju Bayi Motif Hewan", "Harga": 100000, "Gambar": "images/baby_animal.jpg"},
@@ -53,3 +91,13 @@ st.write(f"*Rp {total_harga:,}*")
 # Tombol beli
 if st.button("Beli Sekarang"):
     st.success("Terima kasih atas pembelian Anda!")
+
+# Checkout
+def checkout():
+    st.write("Terima kasih telah berbelanja di toko kami!")
+    st.write("Total pesanan Anda adalah Rp{sum(baju['Harga'] for baju in keranjang)}")
+    st.write("Silakan lakukan pembayaran ke rekening berikut:")
+    st.write("Nama Bank: Bank ABC")
+    st.write("Nomor Rekening: 1234567890")
+    st.write("Atas Nama: Toko Baju Online")
+
